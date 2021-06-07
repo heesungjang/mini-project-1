@@ -1,34 +1,103 @@
-from flask import Flask, render_template
+from pymongo.encryption import Algorithm
+import requests
+import datetime
+import timedelta
+from bs4 import BeautifulSoup
+from flask_bcrypt import Bcrypt
+from pymongo import MongoClient
+from flask import Flask, render_template, jsonify, request
+
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import JWTManager
+
+
+client = MongoClient('localhost', 27017)
+db = client.mini_project
 
 app = Flask(__name__)
+app.config["JWT_SECRET_KEY"] = "super-secret"
+jwt = JWTManager(app)
+bcrypt = Bcrypt(app)
 
 @app.route("/")
 def index():
-    """
-    Moive 26 메인 페이지로 영화 리스트 불러와서 index.html 랜더링
-    """
-    return render_template("index.html")
+    is_logedin = True
 
-@app.route("/auth/login")
+    if is_logedin is True:
+        return render_template("index.html")
+    else:
+        return render_template("login.html")
+
+@app.route("/auth/login", methods=["POST"])
 def login():
     """
-    여기서 로그인 기능 구현
+    로그인 기능
     """
-    pass
+    if request.method == "POST":
+        username_receive = request.form['username_give']
+        password_receive = request.form['password_give']
+        hashed_password = bcrypt.generate_password_hash(password_receive, 10).decode("utf-8")
 
-@app.route("/auth/signup")
+        result = db.users.find_one({'username': username_receive, 'password': hashed_password}, {"_id": False})
+        
+        if result is not None:
+            payload ={
+                'id': username_receive,
+                'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)
+            }
+            token = create_access_token(payload)
+            return jsonify({'result': "success", "token": token})
+        else:
+            return jsonify({'result': "fail", "msg": "아이디, 비밀번호를 확인해주세요."})
+            
+@app.route("/auth/signup", methods=["POST"])
 def signup():
     """
-    여기서 회원가입 기능 구현
+    회원가입 기능
     """
-    pass
+    if request.method == "POST":
+        name_receive = request.form['name_give']
+        username_receive = request.form['username_give']
+        email_receive = request.form['email_give']
+        password_receive = request.form['password_give']
+        password2_receive = request.form['password2_give']
 
-@app.route("movie/:movie_id")
-def movie_detail():
+        if (password_receive == password2_receive):
+            hashed_password = bcrypt.generate_password_hash(password_receive, 10).decode("utf-8")
+            
+            doc = {
+            "name": name_receive,
+            "username": username_receive,
+            "email": email_receive,
+            "password": hashed_password
+            }
+            
+            db.users.insert_one(doc)
+            return jsonify({'result': "success.", "msg": "회원가입 성공."})
+        else:
+            return jsonify({'result': "fail", "msg": "비밀번호가 일치하지 않습니다."})
+
+@app.route("/movie/list", methods=["GET"])
+def get_movies():
     """
-    여기서 상세 페이지 정보 불러오기
+    영화 리스트 불러오기
     """
-    pass
+    if request.method == "GET":
+        movie_dict = list(db.movie_details.find({}, {"_id": False})[0:])
+        if movie_dict is not None:
+            return jsonify({"movies": movie_dict, "msg": "success."})
+
+@app.route("/movie/<movie_id>", methods=["GET"])
+def movie_detail(movie_id):
+    """
+    영화 상세 페이지 정보 불러오기
+    """
+    movie = db.movie_details.find_one({'movie_id': int(movie_id)}, {"_id": False})
+    if movie is not None:
+        return jsonify({"movie": movie, "msg": "success."})
+
 
 @app.route("/movie/comment")
 def comment():
@@ -44,7 +113,6 @@ def like():
     """
     pass
 
+if __name__ == '__main__':
+    app.run('0.0.0.0', port=5000, debug=True)
 
-
-
-    
