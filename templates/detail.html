@@ -58,14 +58,47 @@
           </ul>
         </div>
         <div class="detail__review">
+          <div class="review__title">
+            <h3>영화는 어땠나요?</h3>
+            <button id="jsReviewBtn">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+          </div>
+          <form id="jsReview" class="hide" action="">
+            <input type="text" placeholder="리뷰를 남겨주세요!" />
+          </form>
           <ul class="reviews">
             <li class="review"><span>ID</span>최고예요!</li>
           </ul>
-          <form action="">
-            <input type="text" placeholder="리뷰를 남겨주세요!" />
-          </form>
         </div>
       </div>
     </section>
+    <script>
+      const REVIEW_BTN = document.getElementById('jsReviewBtn');
+      const BTN_ICON = REVIEW_BTN.querySelector('svg');
+      const REVIEW = document.getElementById('jsReview');
+
+      function onClickReviewBtn() {
+        REVIEW.classList.toggle('show');
+        if (REVIEW.classList[1] === 'show')
+          BTN_ICON.style.transform = 'rotate(180deg)';
+        else BTN_ICON.style.transform = 'rotate(0deg)';
+      }
+
+      if (REVIEW_BTN) REVIEW_BTN.addEventListener('click', onClickReviewBtn);
+    </script>
   </body>
 </html>

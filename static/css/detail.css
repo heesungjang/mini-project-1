@@ -48,6 +48,7 @@
 .detail__contents li {
   display: flex;
   justify-content: space-between;
+  margin: 7px 0;
 }
 
 .detail__contents span {
@@ -59,9 +60,41 @@
   height: 14px;
 }
 
-/* 리뷰 */
+/* 리뷰*/
 .detail__review {
   color: var(--black);
+}
+
+.detail__review .review__title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.detail__review .review__title h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.detail__review .review__title button {
+  width: 30px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.detail__review form input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-bottom: var(--black) 1px solid;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
 }
 
 .detail__review .reviews .review {
@@ -71,11 +104,4 @@
 .detail__review .reviews .review span {
   margin-right: 10px;
   font-weight: bold;
-}
-
-.detail__review form input {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-bottom: var(--black) 1px solid;
 }
