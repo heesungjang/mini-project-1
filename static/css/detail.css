@@ -1,0 +1,81 @@
+.detail-container {
+  width: 350px;
+  margin: auto;
+  display: block;
+}
+
+/* 영화이미지 */
+.detail__left {
+  width: 350px;
+  height: 350px;
+}
+
+/* 영화제목 */
+.detail__right .detail__titles {
+  display: flex;
+  justify-content: space-between;
+}
+
+.detail__titles {
+  font-weight: bold;
+  color: #3d3d3d;
+}
+
+.detail__titles .titles__title h3 {
+  font-size: 2rem;
+  margin-bottom: 7px;
+}
+
+/* 스포일러보기 */
+.detail__titles a {
+  padding: 5px 15px;
+  background-color: #58c5d8;
+  color: white;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* 영화 소개 */
+.detail__contents {
+  display: block;
+  font-weight: bold;
+  color: #aaa69d;
+  margin: 50px 0;
+}
+
+.detail__contents li {
+  display: flex;
+  justify-content: space-between;
+}
+
+.detail__contents span {
+  color: #3d3d3d;
+}
+
+.detail__contents svg {
+  color: #ff3838;
+  height: 14px;
+}
+
+/* 리뷰 */
+.detail__review {
+  color: #3d3d3d;
+}
+
+.detail__review .reviews .review {
+  margin: 10px 0;
+}
+
+.detail__review .reviews .review span {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.detail__review form input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-bottom: 1px solid;
+}
