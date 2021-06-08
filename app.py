@@ -23,7 +23,7 @@ bcrypt = Bcrypt(app)
 
 @app.route("/")
 def index():
-    is_logedin = True
+    is_logedin = False
 
     if is_logedin is True:
         return render_template("index.html")
