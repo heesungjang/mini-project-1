@@ -91,6 +91,10 @@ body {
     background-color: #02c8db;
     box-shadow: 3px 3px 8px #b1b1b1, -3px -3px -8px #fff;
     transition: all 0.5s;
+    outline: 0 none;
+}
+.login-button:focus {
+    outline: 0;
 }
 
 .login-button:hover {
@@ -124,4 +128,12 @@ body {
 
 .login-link {
     font-size: 50px;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s;
+    -webkit-text-fill-color: #555 !important;
 }

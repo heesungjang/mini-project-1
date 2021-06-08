@@ -1,7 +1,8 @@
 from pymongo.encryption import Algorithm
 import requests
-import datetime
-import timedelta
+from datetime import (datetime, timedelta)
+
+
 from bs4 import BeautifulSoup
 from flask_bcrypt import Bcrypt
 from pymongo import MongoClient
@@ -38,19 +39,23 @@ def login():
     if request.method == "POST":
         username_receive = request.form['username_give']
         password_receive = request.form['password_give']
-        hashed_password = bcrypt.generate_password_hash(password_receive, 10).decode("utf-8")
+     
+        username_result = hashed_password = db.users.find_one({'username': username_receive}, {"_id": False})["username"]
 
-        result = db.users.find_one({'username': username_receive, 'password': hashed_password}, {"_id": False})
-        
-        if result is not None:
-            payload ={
-                'id': username_receive,
-                'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)
-            }
-            token = create_access_token(payload)
-            return jsonify({'result': "success", "token": token})
-        else:
-            return jsonify({'result': "fail", "msg": "아이디, 비밀번호를 확인해주세요."})
+        if username_result is not None:
+            hashed_password = db.users.find_one({'username': username_receive}, {"_id": False})["password"]
+            
+            password_result = bcrypt.check_password_hash(hashed_password, password_receive) 
+
+            if password_result is True:
+                payload ={
+                    'id': username_receive,
+                    'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)
+                }
+                token = create_access_token(payload)
+                return jsonify({'result': "success", "token": token})
+            else:
+                return jsonify({'result': "fail", "msg": "아이디, 비밀번호를 확인해주세요."})
             
 @app.route("/auth/signup", methods=["POST"])
 def signup():

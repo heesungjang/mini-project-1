@@ -31,9 +31,18 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"
         ></script>
+
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"
+        ></script>
+
+        <!-- main css & js file link -->
         <link rel="stylesheet" href="/static/css/auth.css" />
     </head>
     <body>
+        <script type="text/javascript" src="/static/js/main.js"></script>
         <div class="container">
             <div class="row project-title-container">
                 <div class="col project-title">
@@ -52,6 +61,7 @@
                                     ></path>
                                 </svg>
                                 <input
+                                    id="input-username"
                                     type="text"
                                     class="user-input"
                                     placeholder="아이디"
@@ -66,6 +76,7 @@
                                     ></path>
                                 </svg>
                                 <input
+                                    id="input-password"
                                     type="password"
                                     name="password"
                                     class="pass-input"
