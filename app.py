@@ -76,8 +76,8 @@ def signup():
             
             db.users.insert_one(doc)
             return jsonify({'result': "success.", "msg": "회원가입 성공."})
-        else:
-            return jsonify({'result': "fail", "msg": "비밀번호가 일치하지 않습니다."})
+    else:
+        return jsonify({'result': "fail", "msg": "비밀번호가 일치하지 않습니다."})
 
 @app.route("/movie/list", methods=["GET"])
 def get_movies():
@@ -99,12 +99,26 @@ def movie_detail(movie_id):
         return jsonify({"movie": movie, "msg": "success."})
 
 
-@app.route("/movie/comment")
-def comment():
+@app.route("/movie/<movie_id>/comment", methods=["POST"])
+def comment(movie_id):
     """
     여기서 댓글 기능 구현
     """
-    pass
+    if request.method == "POST":
+        user = db.users.find_one({"username": "heesungj7"}) ##dummy username data
+        
+        user_id = str(user["_id"])
+        movie_id = 1 ## dummy data
+        comment = "I like this movie!!" # dummy data
+        
+        doc ={
+            "user_id": user_id,
+            "movie_id": movie_id,
+            "comment": comment,
+        }
+        db.comments.insert_one(doc)
+        return jsonify({"asd":"asd"})
+    
 
 @app.route("/movie/like")
 def like():
